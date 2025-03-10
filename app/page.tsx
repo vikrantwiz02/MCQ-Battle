@@ -8,8 +8,19 @@ import { Button } from "@/components/ui/button"
 import { Trophy, Users, BookOpen, Play, LogOut } from "lucide-react"
 import { toast } from "@/hooks/use-toast"
 
+// Define a type for the session user that includes isAdmin
+interface ExtendedUser {
+  name?: string | null
+  email?: string | null
+  image?: string | null
+  isAdmin?: boolean
+}
+
 export default function Home() {
   const { data: session, status } = useSession()
+
+  // Use the extended user type
+  const user = session?.user as ExtendedUser | undefined
 
   const handleLogout = async () => {
     await signOut({ redirect: false })
@@ -29,12 +40,12 @@ export default function Home() {
             MCQ Battle
           </h1>
           <div className="flex gap-4 items-center">
-            {status === "authenticated" ? (
+            {status === "authenticated" && user ? (
               <>
                 {/* Show user info and logout when logged in */}
                 <div className="text-sm mr-2">
-                  Hello, <span className="font-semibold">{session.user.name}</span>
-                  {session.user.isAdmin && (
+                  Hello, <span className="font-semibold">{user.name}</span>
+                  {user.isAdmin && (
                     <Link href="/admin" className="ml-2 text-xs bg-purple-700 px-2 py-1 rounded">
                       Admin Panel
                     </Link>

@@ -1,20 +1,20 @@
+import type { DefaultSession } from "next-auth"
+
+// Extend the built-in session types
 declare module "next-auth" {
   interface Session {
     user: {
       id: string
-      name: string
-      email: string
-      image?: string
       isAdmin: boolean
-    }
+    } & DefaultSession["user"]
   }
 
   interface User {
     id: string
-    name: string
-    email: string
-    image?: string
     isAdmin: boolean
+    name?: string | null
+    email?: string | null
+    image?: string | null
   }
 }
 
